@@ -9,7 +9,6 @@ import * as bcrypt from 'bcrypt';
 import { SignupDTO } from './dto/signup.dto';
 import { SigninDTO } from './dto/signin.dto';
 import { UserService } from 'src/user/user.service';
-import { UserDocument } from 'src/user/schemas/user.schema';
 import IJWTPayload from './interfaces/jwt.payload.interface';
 @Injectable()
 export class AuthService {
@@ -143,6 +142,15 @@ export class AuthService {
     } catch (error) {
       this.logger.error(`Error generating JWT: ${error.message}`, error.stack);
       throw error;
+    }
+  }
+
+  async validateToken(token: string): Promise<boolean> {
+    try {
+      await this.jwtService.verify(token);
+      return true;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid or expired token');
     }
   }
 }
