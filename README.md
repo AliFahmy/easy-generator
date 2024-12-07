@@ -42,6 +42,7 @@ Ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (v16+ recommended)
 - [npm](https://www.npmjs.com/)
 - [Git](https://git-scm.com/)
+- [yarn](https://yarnpkg.com/)
 
 ### Clone the Repository
 
@@ -80,14 +81,14 @@ cd easy-generator
    ```
 2. Install dependencies:
    ```bash
-   npm install
+   yarn install
    ```
 3. Configure environment variables:
-   - Create a `.env` file in the `frontend` folder based on the provided `.env.example`.
+   - Create a `.env` file in the `frontend`.
    - Add the API base URL to communicate with the backend.
 4. Start the frontend development server:
    ```bash
-   npm start
+   yarn start
    ```
 
 ---
