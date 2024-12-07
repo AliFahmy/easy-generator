@@ -19,7 +19,7 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
-  async signup(userData: SignupDTO): Promise<UserDocument> {
+  async signup(userData: SignupDTO): Promise<string> {
     try {
       this.logger.log(
         `Initiating signup for user with email: ${userData.email}`,
@@ -52,7 +52,11 @@ export class AuthService {
 
       this.logger.log(`User created successfully with ID: ${newUser._id}`);
 
-      return newUser;
+      const payload: IJWTPayload = {
+        sub: newUser._id.toString(),
+        email: newUser.email,
+      };
+      return await this.generateJwt(payload);
     } catch (error) {
       this.logger.error(`Signup error: ${error.message}`, error.stack);
       throw error;

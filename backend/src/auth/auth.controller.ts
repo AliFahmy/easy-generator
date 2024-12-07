@@ -26,11 +26,14 @@ export class AuthController {
       this.logger.log(
         `Received signup request with body: ${JSON.stringify(body)}`,
       );
-      const newUser = await this.authService.signup(body);
-      this.logger.log(`User successfully created with id: ${newUser.id}`);
+      const jwtToken = await this.authService.signup(body);
+      this.logger.log(`User successfully created with token: ${jwtToken}`);
 
       return {
         message: 'User created successfully',
+        data: {
+          jwtToken,
+        },
       };
     } catch (error) {
       throw error;
