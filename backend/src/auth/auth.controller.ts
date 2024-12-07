@@ -78,6 +78,22 @@ export class AuthController {
     }
   }
 
+  @Post('logout')
+  @HttpCode(200)
+  async logout(@Res() res: Response) {
+    try {
+      res.clearCookie('authToken', {
+        httpOnly: true,
+        sameSite: 'strict',
+      });
+      res.status(200).send({
+        message: 'User logged out successfully',
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   @Get('validate-token')
   async validateToken(@Req() req: Request, @Res() res: Response) {
     try {
