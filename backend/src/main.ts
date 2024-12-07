@@ -1,20 +1,37 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  try {
+    const app = await NestFactory.create(AppModule);
+    const configService = app.get(ConfigService);
 
-  const config = new DocumentBuilder()
-    .setTitle('Easy Generator API')
-    .setDescription('Easy Generator API Documentation')
-    .setVersion('1.0')
-    .build();
+    app.useGlobalPipes(new ValidationPipe());
+    console.log('Global Validation Pipe has been set up.');
 
-  const document = SwaggerModule.createDocument(app, config);
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle('Easy Generator API')
+      .setDescription('Easy Generator API Documentation')
+      .setVersion('1.0')
+      .build();
+    const document = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup('api', app, document);
+    console.log('Swagger documentation has been set up at /api');
 
-  SwaggerModule.setup('api', app, document);
-
-  await app.listen(8080);
+    const port = configService.get<number>('PORT') || 8080;
+    await app.listen(port);
+    console.log(`Application is running on: http://localhost:${port}`);
+  } catch (error) {
+    console.error(
+      'Error during application startup:',
+      error.message,
+      error.stack,
+    );
+    process.exit(1);
+  }
 }
+
 bootstrap();
