@@ -20,7 +20,10 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = () => setIsAuthenticated(true);
-  const logout = () => setIsAuthenticated(false);
+  const logout = async () => {
+    setIsAuthenticated(false);
+    await axiosInstance.post("/auth/logout");
+  };
 
   useEffect(() => {
     const validateToken = async () => {

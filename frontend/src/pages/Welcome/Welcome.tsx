@@ -1,7 +1,9 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Button, Card, CardContent, Typography } from "@mui/material";
 import { FC } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 export const Welcome: FC = () => {
+  const { logout } = useAuth();
   return (
     <Card
       sx={{
@@ -23,6 +25,9 @@ export const Welcome: FC = () => {
         <Typography variant="h4" component="h1" align="center" gutterBottom>
           Welcome to the application.
         </Typography>
+        <Button onClick={() => logout()} color="error" variant="contained">
+          Logout
+        </Button>
       </CardContent>
     </Card>
   );
